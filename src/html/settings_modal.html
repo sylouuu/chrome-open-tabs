@@ -1,0 +1,43 @@
+<md-dialog aria-label="Settings modal" ng-cloak>
+    <form ng-submit="save(open_tabs)">
+        <md-toolbar>
+            <div class="md-toolbar-tools">
+                <h3>Settings</h3>
+                <span flex></span>
+                <md-button class="md-icon-button" aria-label="Close" ng-click="closeForm()">
+                    <md-icon md-svg-icon="close"></md-icon>
+                </md-button>
+            </div>
+        </md-toolbar>
+        <md-dialog-content layout-padding>
+
+            <md-list>
+                <md-list-item class="md-2-line">
+                    <div class="md-list-item-text">
+                        <h3>Show open tabs count</h3>
+                        <p>Disable if you don't care about this count.</p>
+                    </div>
+
+                    <md-switch class="md-accent md-secondary" ng-model="open_tabs.settings.show_browser_action_count" aria-label="Show count"></md-switch>
+                </md-list-item>
+
+                <md-list-item class="md-2-line">
+                    <div class="md-list-item-text">
+                        <h3>Enable "New version" toast</h3>
+                        <p>In case you worry about extension changes.</p>
+                    </div>
+
+                    <md-switch class="md-accent md-secondary" ng-model="open_tabs.settings.enable_new_version_notification" aria-label="Enable toast"></md-switch>
+                </md-list-item>
+            </md-list>
+
+        </md-dialog-content>
+
+        <!-- Save -->
+        <md-dialog-actions>
+            <md-button class="md-raised md-accent" type="submit">
+                <md-icon md-svg-icon="save"></md-icon>&nbsp;Save
+            </md-button>
+        </md-dialog-actions>
+    </form>
+</md-dialog>

@@ -1,0 +1,24 @@
+{
+    "name": "chrome-open-tabs",
+    "version": "0.1.0",
+    "description": "Show open tabs",
+    "repository": {
+        "type": "git",
+        "url": "https://github.com/sylouuu/chrome-open-tabs.git"
+    },
+    "author": "sylouuu",
+    "license": "MIT",
+    "bugs": {
+        "url": "https://github.com/sylouuu/chrome-open-tabs/issues"
+    },
+    "devDependencies": {
+        "gulp": "~3.9.0",
+        "gulp-concat": "~2.6.0",
+        "gulp-jscs": "~4.0.0",
+        "gulp-jshint": "~2.0.0",
+        "gulp-minify-html": "~1.0.0",
+        "gulp-rename": "~1.2.0",
+        "gulp-uglify": "~1.5.0",
+        "jshint": "^2.9.2"
+    }
+}

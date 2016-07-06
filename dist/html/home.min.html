@@ -1,0 +1,102 @@
+<div flex="50" flex-offset="25">
+
+    <md-content>
+        <md-tabs md-dynamic-height md-border-bottom>
+            <md-tab label="All Tabs ({{ tabs.pinned.data.length + tabs.standard.data.length }})">
+                <md-content class="md-padding">
+
+                    <div flex ng-repeat="key in ['pinned', 'standard']" ng-if="tabs[key].data.length > 0">
+                        <div ng-include src="'list'"></div>
+                    </div>
+
+                </md-content>
+            </md-tab>
+            <md-tab label="Pinned Tabs ({{ tabs.pinned.data.length }})">
+                <md-content class="md-padding">
+
+                    <div flex ng-repeat="key in ['pinned']" ng-if="tabs[key].data.length > 0">
+                        <div ng-include src="'list'"></div>
+                    </div>
+
+                </md-content>
+            </md-tab>
+            <md-tab label="Standard Tabs ({{ tabs.standard.data.length }})">
+                <md-content class="md-padding">
+
+                    <div flex ng-repeat="key in ['standard']" ng-if="tabs[key].data.length > 0">
+                        <div ng-include src="'list'"></div>
+                    </div>
+
+                </md-content>
+            </md-tab>
+        </md-tabs>
+    </md-content>
+
+</div>
+
+<script type="text/ng-template" id="list">
+    <md-toolbar style="background-color: #FAFAFA;">
+        <div class="md-toolbar-tools">
+            <span flex></span>
+            <md-button class="md-warn md-secondary" aria-label="Close all tabs" ng-click="closeAllTabs(tabs[key], $event)" ga-track-event="['open-tabs', 'close-all']">Close all</md-button>
+        </div>
+    </md-toolbar>
+
+    <md-list class="md-dense" flex="100">
+        <md-list-item ng-repeat="tab in tabs[key].data | searchFilter: search.query">
+
+            <img ng-src="{{ ((tab.favIconUrl === undefined || tab.favIconUrl.indexOf('http') === -1) ? '/img/default.png' : tab.favIconUrl) }}" alt="favicon" class="md-avatar" style="width: 16px;height: 16px;border-radius: 0;margin-left: 10px;margin-right: 10px;" ng-if="tab.status === 'complete'">
+
+            <md-progress-circular class="md-avatar" md-mode="indeterminate" md-diameter="16px" ng-if="tab.status === 'loading'"></md-progress-circular>
+
+            <p class="text-nowrap">
+                <span ng-bind="tab.title"></span><br>
+                <a class="md-primary" ng-href="{{ tab.url }}" ng-bind="tab.url"></a>
+            </p>
+
+            <md-button class="md-icon-button md-secondary" ng-click="goToTab(tab)" aria-label="Go to tab" ga-track-event="['open-tabs', 'go-to']">
+                <md-icon md-svg-icon="arrow-right" md-menu-align-target></md-icon>
+                <md-tooltip md-direction="bottom">Go to</md-tooltip>
+            </md-button>
+
+            <md-button class="md-icon-button md-secondary" ng-click="removeTab(tab)" aria-label="Close tab" ga-track-event="['open-tabs', 'close']">
+                <md-icon md-svg-icon="close" md-menu-align-target></md-icon>
+                <md-tooltip md-direction="bottom">Close</md-tooltip>
+            </md-button>
+
+            <md-menu class="md-secondary" md-position-mode="target-right target">
+
+                <md-button class="md-icon-button" ng-click="$mdOpenMenu($event)" aria-label="More actions" ga-track-event="['open-tabs', 'more-actions']">
+                    <md-icon md-svg-icon="dots-horizontal"></md-icon>
+                </md-button>
+
+                <md-menu-content width="2">
+                    <md-menu-item>
+                        <md-button ng-click="reloadTab(tab)" aria-label="Reload tab" ga-track-event="['open-tabs', 'reload']">
+                            <md-icon md-svg-icon="reload"></md-icon> Reload
+                        </md-button>
+                    </md-menu-item>
+                    <md-menu-item>
+                        <md-button ng-click="duplicateTab(tab)" aria-label="Duplicate tab" ga-track-event="['open-tabs', 'duplicate']">
+                            <md-icon md-svg-icon="content-duplicate"></md-icon> Duplicate
+                        </md-button>
+                    </md-menu-item>
+                    <md-menu-item ng-if="tab.pinned === false">
+                        <md-button ng-click="pinOrUnpinTab(tab, true)" aria-label="Pin tab" ga-track-event="['open-tabs', 'pin']">
+                            <md-icon md-svg-icon="pin"></md-icon> Pin
+                        </md-button>
+                    </md-menu-item>
+                    <md-menu-item ng-if="tab.pinned === true">
+                        <md-button ng-click="pinOrUnpinTab(tab, false)" aria-label="Unpin tab" ga-track-event="['open-tabs', 'unpin']">
+                            <md-icon md-svg-icon="pin-off"></md-icon> Unpin
+                        </md-button>
+                    </md-menu-item>
+                </md-menu-content>
+
+            </md-menu>
+
+            <md-divider ng-if="$last === false"></md-divider>
+
+        </md-list-item>
+    </md-list>
+</script>

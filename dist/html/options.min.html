@@ -1,0 +1,92 @@
+<!doctype html>
+<html lang="en" ng-app="OpenTabs">
+    <head>
+        <meta charset="utf-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+        <title>Open Tabs</title>
+
+        <link rel="stylesheet" href="https://ajax.googleapis.com/ajax/libs/angular_material/1.1.0-rc.5/angular-material.min.css">
+
+        <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.5.7/angular.min.js"></script>
+        <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.5.7/angular-route.min.js"></script>
+        <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.5.7/angular-animate.min.js"></script>
+        <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.5.7/angular-aria.min.js"></script>
+
+        <script src="https://ajax.googleapis.com/ajax/libs/angular_material/1.1.0-rc.5/angular-material.min.js"></script>
+
+        <script src="../js/libs/angular-google-analytics.min.js"></script>
+        <script src="/js/options.min.js"></script>
+
+        <style>
+            md-input-container > md-icon {
+                top: 5px;
+            }
+
+            .text-nowrap {
+                white-space: nowrap;
+                overflow: hidden;
+                text-overflow: ellipsis;
+            }
+        </style>
+    </head>
+
+    <body layout="column" ng-controller="MainController">
+
+        <!-- Toolbar -->
+        <md-toolbar md-scroll-shrink>
+            <div class="md-toolbar-tools">
+                <h3 flex="25">Open Tabs</h3>
+
+                <md-input-container md-no-float flex="50" layout-align="center" layout="row">
+                    <md-icon md-svg-icon="magnify"></md-icon>
+                    <input ng-model="search.query" type="text" autocomplete="off" aria-label="Search" placeholder="Search in title or url">
+                </md-input-container>
+
+                <md-button class="md-icon-button" ng-click="loadTabs()" aria-label="Refresh list">
+                    <md-icon md-svg-icon="refresh"></md-icon>
+                    <md-tooltip md-direction="bottom">Refresh list</md-tooltip>
+                </md-button>
+
+                <span flex></span>
+
+                <md-button class="md-icon-button" ng-click="showSettings($event)" aria-label="Settings">
+                    <md-icon md-svg-icon="settings"></md-icon>
+                </md-button>
+
+                <md-menu md-position-mode="target-right target">
+
+                    <md-button class="md-icon-button" ng-click="$mdOpenMenu($event)" aria-label="Links">
+                        <md-icon md-svg-icon="dots-vertical"></md-icon>
+                    </md-button>
+
+                    <md-menu-content width="3">
+                        <!--<md-menu-item>-->
+                            <!--<md-button href="https://chrome.google.com/webstore/detail/tab-modifier/hcbgadmbdkiilgpifjgcakjehmafcjai" target="_blank" aria-label="Chrome Web Store Project" ga-track-event="['resources', 'chrome-web-store-click']">-->
+                                <!--<md-icon md-svg-icon="google-chrome"></md-icon>-->
+                                <!--Chrome Web Store-->
+                            <!--</md-button>-->
+                        <!--</md-menu-item>-->
+                        <md-menu-item>
+                            <md-button href="https://github.com/sylouuu/chrome-open-tabs" target="_blank" aria-label="GitHub Project" ga-track-event="['resources', 'github-click']">
+                                <md-icon md-svg-icon="github-circle"></md-icon>
+                                GitHub
+                            </md-button>
+                        </md-menu-item>
+                        <md-menu-item>
+                            <md-button href="https://www.paypal.me/svalienne/5" target="_blank" aria-label="Donate" ga-track-event="['resources', 'donate-click']">
+                                <md-icon md-svg-icon="credit-card"></md-icon>
+                                Donate
+                            </md-button>
+                        </md-menu-item>
+                    </md-menu-content>
+
+                </md-menu>
+
+            </div>
+        </md-toolbar>
+
+        <md-content ng-view></md-content>
+
+    </body>
+</html>
