@@ -21,7 +21,7 @@ I wanted to find an extension that shows opened tabs in an elegant ways but didn
 
 ## Installation
 
-Install from the **[Chrome Web Store](https://chrome.google.com/webstore/detail/hcbgadmbdkiilgpifjgcakjehmafcjai/)**.
+Install from the **[Chrome Web Store](https://chrome.google.com/webstore/detail/open-tabs/cepfpldhbcfaklnnldhoaahgliijehap)**.
 
 ## Usage
 
