@@ -23,6 +23,8 @@ I wanted to find an extension that shows opened tabs in an elegant ways but didn
 
 Install from the **[Chrome Web Store](https://chrome.google.com/webstore/detail/open-tabs/cepfpldhbcfaklnnldhoaahgliijehap)**.
 
+Also available for **[Opera Browser](https://addons.opera.com/fr/extensions/details/open-tabs/)**.
+
 ## Usage
 
 * Click on the <img src="dist/img/icon_16.png" alt="icon"> icon to open.
