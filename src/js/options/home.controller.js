@@ -23,6 +23,10 @@ app.controller('HomeController', ['$scope', '$routeParams', '$location', '$mdDia
         }
     };
 
+    $scope.clearAllHiddenTabs = function () {
+        $scope.tabs.hidden.data = [];
+    };
+
     $scope.removeAllTabs = function (tabs) {
         var ids = [];
 
@@ -51,6 +55,29 @@ app.controller('HomeController', ['$scope', '$routeParams', '$location', '$mdDia
 
     $scope.pinOrUnpinTab = function (tab, pinned) {
         chrome.tabs.update(tab.id, { pinned: pinned });
+    };
+
+    $scope.hideTab = function (tab) {
+        $scope.tabs.hidden.data.push(tab);
+        $scope.removeTab(tab);
+        $scope.syncHiddenTabs();
+    };
+
+    $scope.removeHiddenTab = function (tab) {
+        $scope.tabs.hidden.data.splice($scope.tabs.hidden.data.indexOf(tab), 1);
+        $scope.syncHiddenTabs();
+    };
+
+    $scope.openHiddenTab = function (tab) {
+        chrome.tabs.create({ url: tab.url, active: true });
+
+        $scope.removeHiddenTab(tab);
+    };
+
+    $scope.syncHiddenTabs = function () {
+        $scope.open_tabs.hidden_tabs = $scope.tabs.hidden.data;
+
+        chrome.storage.local.set({ open_tabs: $scope.open_tabs });
     };
 
     // --------------------------------------------------------------------------------------------------------

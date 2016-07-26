@@ -2,28 +2,20 @@
 
     <md-content>
         <md-tabs md-dynamic-height md-border-bottom>
-            <md-tab label="All Tabs ({{ tabs.pinned.data.length + tabs.standard.data.length }})">
+            <md-tab label="All Tabs ({{ tabs.pinned.data.length + tabs.standard.data.length + tabs.hidden.data.length }})">
                 <md-content class="md-padding">
 
-                    <div flex ng-repeat="key in ['pinned', 'standard']" ng-if="tabs[key].data.length > 0">
+                    <div flex ng-repeat="key in ['pinned', 'standard', 'hidden']" ng-if="tabs[key].data.length > 0">
                         <div ng-include src="'list'"></div>
                     </div>
 
                 </md-content>
             </md-tab>
-            <md-tab label="Pinned Tabs ({{ tabs.pinned.data.length }})">
+
+            <md-tab label="{{ tabs[key].title }} ({{ tabs[key].data.length }})" ng-repeat="key in ['pinned', 'standard', 'hidden']">
                 <md-content class="md-padding">
 
-                    <div flex ng-repeat="key in ['pinned']" ng-if="tabs[key].data.length > 0">
-                        <div ng-include src="'list'"></div>
-                    </div>
-
-                </md-content>
-            </md-tab>
-            <md-tab label="Standard Tabs ({{ tabs.standard.data.length }})">
-                <md-content class="md-padding">
-
-                    <div flex ng-repeat="key in ['standard']" ng-if="tabs[key].data.length > 0">
+                    <div flex ng-if="tabs[key].data.length > 0">
                         <div ng-include src="'list'"></div>
                     </div>
 
@@ -37,8 +29,13 @@
 <script type="text/ng-template" id="list">
     <md-toolbar style="background-color: #FAFAFA;">
         <div class="md-toolbar-tools">
+            <h2>
+                <span ng-bind="tabs[key].title" style="color: #727272"></span>
+            </h2>
             <span flex></span>
-            <md-button class="md-warn md-secondary" aria-label="Close all tabs" ng-click="closeAllTabs(tabs[key], $event)" ga-track-event="['open-tabs', 'close-all']">Close all</md-button>
+            <md-button class="md-warn md-secondary" ng-click="closeAllTabs(tabs[key], $event)" ng-if="tabs[key].code !== 'HIDDEN_TABS'" aria-label="Close all tabs" ga-track-event="['open-tabs', 'close-all']">Close all</md-button>
+
+            <md-button class="md-warn md-secondary" ng-click="clearAllHiddenTabs()" ng-if="tabs[key].code === 'HIDDEN_TABS'" aria-label="Close all tabs" ga-track-event="['open-tabs', 'clear-all']">Clear all</md-button>
         </div>
     </md-toolbar>
 
@@ -54,17 +51,17 @@
                 <a class="md-primary" ng-href="{{ tab.url }}" ng-bind="tab.url"></a>
             </p>
 
-            <md-button class="md-icon-button md-secondary" ng-click="goToTab(tab)" aria-label="Go to tab" ga-track-event="['open-tabs', 'go-to']">
+            <md-button class="md-icon-button md-secondary" ng-click="goToTab(tab)" ng-if="tabs[key].code !== 'HIDDEN_TABS'" aria-label="Go to tab" ga-track-event="['open-tabs', 'go-to']">
                 <md-icon md-svg-icon="arrow-right" md-menu-align-target></md-icon>
                 <md-tooltip md-direction="bottom">Go to</md-tooltip>
             </md-button>
 
-            <md-button class="md-icon-button md-secondary" ng-click="removeTab(tab)" aria-label="Close tab" ga-track-event="['open-tabs', 'close']">
+            <md-button class="md-icon-button md-secondary" ng-click="removeTab(tab)" ng-if="tabs[key].code !== 'HIDDEN_TABS'" aria-label="Close tab" ga-track-event="['open-tabs', 'close']">
                 <md-icon md-svg-icon="close" md-menu-align-target></md-icon>
                 <md-tooltip md-direction="bottom">Close</md-tooltip>
             </md-button>
 
-            <md-menu class="md-secondary" md-position-mode="target-right target">
+            <md-menu class="md-secondary" md-position-mode="target-right target" ng-if="tabs[key].code !== 'HIDDEN_TABS'">
 
                 <md-button class="md-icon-button" ng-click="$mdOpenMenu($event)" aria-label="More actions" ga-track-event="['open-tabs', 'more-actions']">
                     <md-icon md-svg-icon="dots-horizontal"></md-icon>
@@ -91,9 +88,24 @@
                             <md-icon md-svg-icon="pin-off"></md-icon> Unpin
                         </md-button>
                     </md-menu-item>
+                    <md-menu-item>
+                        <md-button ng-click="hideTab(tab)" aria-label="Hide tab" ga-track-event="['open-tabs', 'hide']">
+                            <md-icon md-svg-icon="eye-off"></md-icon> Hide
+                        </md-button>
+                    </md-menu-item>
                 </md-menu-content>
 
             </md-menu>
+
+            <md-button class="md-icon-button md-secondary" ng-click="openHiddenTab(tab)" ng-if="tabs[key].code === 'HIDDEN_TABS'" aria-label="Open tab">
+                <md-icon md-svg-icon="arrow-right" md-menu-align-target></md-icon>
+                <md-tooltip md-direction="bottom">Open</md-tooltip>
+            </md-button>
+
+            <md-button class="md-icon-button md-secondary" ng-click="removeHiddenTab(tab)" ng-if="tabs[key].code === 'HIDDEN_TABS'" aria-label="Close tab" ga-track-event="['open-tabs', 'delete']">
+                <md-icon md-svg-icon="delete" md-menu-align-target></md-icon>
+                <md-tooltip md-direction="bottom">Remove</md-tooltip>
+            </md-button>
 
             <md-divider ng-if="$last === false"></md-divider>
 
