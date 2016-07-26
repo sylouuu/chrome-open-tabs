@@ -12,6 +12,7 @@ Show open tabs.
 * Reload tab
 * Duplicate tab
 * Pin/unpin tab
+* Hide tab
 
 The open tabs are updated in real time.
 
