@@ -1,7 +1,7 @@
 {
     "manifest_version": 2,
     "name": "Open Tabs",
-    "version": "0.2.0",
+    "version": "0.2.1",
     "description": "Show open tabs",
     "homepage_url": "https://github.com/sylouuu/chrome-open-tabs",
 
