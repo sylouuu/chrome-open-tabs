@@ -1,41 +1,92 @@
 app.controller('HomeController', ['$scope', '$routeParams', '$location', '$mdDialog', '$mdToast', 'Analytics', function ($scope, $routeParams, $location, $mdDialog, $mdToast, Analytics) {
 
+    $scope.syncHiddenTabs = function () {
+        $scope.open_tabs.hidden_tabs = $scope.tabs.hidden.data;
+
+        chrome.storage.local.set({ open_tabs: $scope.open_tabs });
+    };
+
     // ---------------------------------------------------------------------------------
-    // Actions
+    // Checkboxes handling
 
-    $scope.closeAllTabs = function (tabs, evt) {
-        if (tabs.code === 'PINNED_TABS') {
-            var confirm = $mdDialog
-                .confirm()
-                .clickOutsideToClose(false)
-                .title('Close all')
-                .textContent('Do you really want to close all pinned tabs?')
-                .ariaLabel('Close all')
-                .targetEvent(evt)
-                .ok('Close all')
-                .cancel('Cancel');
+    $scope.isIndeterminate = function (array) {
+        return (array.selected.length !== 0 && array.selected.length !== array.data.length);
+    };
 
-            $mdDialog.show(confirm).then(function () {
-                $scope.removeAllTabs(tabs);
+    $scope.isChecked = function (array) {
+        return array.selected.length === array.data.length;
+    };
+
+    $scope.toggleAll = function (array) {
+        if (array.selected.length === array.data.length) {
+            array.selected = [];
+        } else if (array.selected.length === 0 || array.selected.length > 0) {
+            angular.forEach(array.data, function (tab) {
+                array.selected.push(tab.id);
             });
-        } else {
-            $scope.removeAllTabs(tabs);
         }
     };
 
-    $scope.clearAllHiddenTabs = function () {
-        $scope.tabs.hidden.data = [];
+    $scope.toggle = function (array, tab_id) {
+        var i = array.selected.indexOf(tab_id);
+
+        if (i > -1) {
+            array.selected.splice(i, 1);
+        } else {
+            array.selected.push(tab_id);
+        }
     };
 
-    $scope.removeAllTabs = function (tabs) {
-        var ids = [];
+    // ---------------------------------------------------------------------------------
+    // Actions on checked tabs
 
-        angular.forEach(tabs.data, function (tab) {
-            ids.push(tab.id);
+    $scope.closeAllTabs = function (array) {
+        chrome.tabs.remove(array.selected);
+
+        array.selected = [];
+    };
+
+    $scope.reloadAllTabs = function (array) {
+        angular.forEach(array.selected, function (id) {
+            $scope.reloadTab(id)
         });
 
-        chrome.tabs.remove(ids);
+        array.selected = [];
     };
+
+    $scope.pinOrUnpinAllTabs = function (array, pinned) {
+        angular.forEach(array.selected, function (id) {
+            $scope.pinOrUnpinTab(id, pinned);
+        });
+
+        array.selected = [];
+    };
+
+    $scope.hideAllTabs = function (array) {
+        angular.forEach(array.selected, function (id) {
+            chrome.tabs.get(id, function (tab) {
+                $scope.hideTab(tab);
+            });
+        });
+
+        array.selected = [];
+    };
+
+    $scope.removeAllHiddenTabs = function (array) {
+        // Loop in reverse because of splice
+        for (var i = array.data.length - 1; i >= 0; i--) {
+            if (array.selected.indexOf(array.data[i].id) !== -1) {
+                array.data.splice(array.data.indexOf(array.data[i]), 1);
+            }
+        }
+
+        array.selected = [];
+
+        $scope.syncHiddenTabs();
+    };
+
+    // ---------------------------------------------------------------------------------
+    // Actions on individual tab
 
     $scope.goToTab = function (tab) {
         chrome.tabs.update(tab.id, { active: true, highlighted: true });
@@ -45,16 +96,16 @@ app.controller('HomeController', ['$scope', '$routeParams', '$location', '$mdDia
         chrome.tabs.remove(tab.id);
     };
 
-    $scope.reloadTab = function (tab) {
-        chrome.tabs.reload(tab.id);
+    $scope.reloadTab = function (id) {
+        chrome.tabs.reload(id);
     };
 
     $scope.duplicateTab = function (tab) {
         chrome.tabs.create({ url: tab.url, active: false, pinned: tab.pinned, index: tab.index + 1 });
     };
 
-    $scope.pinOrUnpinTab = function (tab, pinned) {
-        chrome.tabs.update(tab.id, { pinned: pinned });
+    $scope.pinOrUnpinTab = function (id, pinned) {
+        chrome.tabs.update(id, { pinned: pinned });
     };
 
     $scope.hideTab = function (tab) {
@@ -72,12 +123,6 @@ app.controller('HomeController', ['$scope', '$routeParams', '$location', '$mdDia
         chrome.tabs.create({ url: tab.url, active: true });
 
         $scope.removeHiddenTab(tab);
-    };
-
-    $scope.syncHiddenTabs = function () {
-        $scope.open_tabs.hidden_tabs = $scope.tabs.hidden.data;
-
-        chrome.storage.local.set({ open_tabs: $scope.open_tabs });
     };
 
     // --------------------------------------------------------------------------------------------------------

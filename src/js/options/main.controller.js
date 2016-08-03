@@ -9,9 +9,9 @@ app.controller('MainController', ['$scope', '$mdDialog', '$mdMedia', 'Analytics'
     };
     $scope.search    = { query: null };
     $scope.tabs      = {
-        pinned: { code: 'PINNED_TABS', title: 'Pinned tabs', data: [] },
-        standard: { code: 'STANDARD_TABS', title: 'Standard tabs', data: [] },
-        hidden: { code: 'HIDDEN_TABS', title: 'Hidden tabs', data: [] }
+        pinned: { code: 'PINNED_TABS', title: 'Pinned tabs', data: [], selected: [] },
+        standard: { code: 'STANDARD_TABS', title: 'Standard tabs', data: [], selected: [] },
+        hidden: { code: 'HIDDEN_TABS', title: 'Hidden tabs', data: [], selected: [] }
     };
 
     chrome.storage.local.get('open_tabs', function (items) {

@@ -7,6 +7,8 @@
 
                     <div flex ng-repeat="key in ['pinned', 'standard', 'hidden']" ng-if="tabs[key].data.length > 0">
                         <div ng-include src="'list'"></div>
+
+                        <md-divider style="background-color: #FCC848;" ng-if="$last === false"></md-divider>
                     </div>
 
                 </md-content>
@@ -27,15 +29,59 @@
 </div>
 
 <script type="text/ng-template" id="list">
-    <md-toolbar style="background-color: #FAFAFA;">
+    <md-toolbar class="md-accent" style="background-color: #FAFAFA;color: #727272">
         <div class="md-toolbar-tools">
             <h2>
-                <span ng-bind="tabs[key].title" style="color: #727272"></span>
+                <span ng-bind="tabs[key].title"></span>
             </h2>
-            <span flex></span>
-            <md-button class="md-warn md-secondary" ng-click="closeAllTabs(tabs[key], $event)" ng-if="tabs[key].code !== 'HIDDEN_TABS'" aria-label="Close all tabs" ga-track-event="['open-tabs', 'close-all']">Close all</md-button>
 
-            <md-button class="md-warn md-secondary" ng-click="clearAllHiddenTabs()" ng-if="tabs[key].code === 'HIDDEN_TABS'" aria-label="Close all tabs" ga-track-event="['open-tabs', 'clear-all']">Clear all</md-button>
+            <span flex></span>
+
+            <md-button class="md-icon-button md-secondary" ng-click="closeAllTabs(tabs[key])" ng-if="tabs[key].selected.length > 0 && tabs[key].code !== 'HIDDEN_TABS'" aria-label="Close all checked" ga-track-event="['open-tabs', 'close-all']">
+                <md-icon md-svg-icon="close" md-menu-align-target style="fill: #727272;"></md-icon>
+                <md-tooltip md-direction="bottom">Close all checked</md-tooltip>
+            </md-button>
+
+            <md-menu class="md-secondary" md-position-mode="target-right target" ng-if="tabs[key].selected.length > 0 && tabs[key].code !== 'HIDDEN_TABS'" style="margin-right: 7px;">
+
+                <md-button class="md-icon-button" ng-click="$mdOpenMenu($event)" aria-label="More actions all checked" ga-track-event="['open-tabs', 'more-actions-all']">
+                    <md-icon md-svg-icon="dots-horizontal" style="fill: #727272;"></md-icon>
+                </md-button>
+
+                <md-menu-content width="3">
+                    <md-menu-item>
+                        <md-button ng-click="reloadAllTabs(tabs[key])" aria-label="Reload all checked" ga-track-event="['open-tabs', 'reload-all']">
+                            <md-icon md-svg-icon="reload"></md-icon> Reload all checked
+                        </md-button>
+                    </md-menu-item>
+                    <md-menu-item>
+                        <md-button ng-click="pinOrUnpinAllTabs(tabs[key], true)" aria-label="Pin all checked" ga-track-event="['open-tabs', 'pin-all']">
+                            <md-icon md-svg-icon="pin"></md-icon> Pin all checked
+                        </md-button>
+                    </md-menu-item>
+                    <md-menu-item>
+                        <md-button ng-click="pinOrUnpinAllTabs(tabs[key], false)" aria-label="Unpin all checked" ga-track-event="['open-tabs', 'unpin-all']">
+                            <md-icon md-svg-icon="pin-off"></md-icon> Unpin all checked
+                        </md-button>
+                    </md-menu-item>
+                    <md-menu-item>
+                        <md-button ng-click="hideAllTabs(tabs[key])" aria-label="Hide all checked" ga-track-event="['open-tabs', 'hide-all']">
+                            <md-icon md-svg-icon="eye-off"></md-icon> Hide all checked
+                        </md-button>
+                    </md-menu-item>
+                </md-menu-content>
+
+            </md-menu>
+
+            <md-button class="md-icon-button md-secondary" ng-click="removeAllHiddenTabs(tabs[key])" ng-if="tabs[key].selected.length > 0 && tabs[key].code === 'HIDDEN_TABS'" aria-label="Remove all checked" ga-track-event="['open-tabs', 'delete-all']" style="margin-right: 18px">
+                <md-icon md-svg-icon="delete" md-menu-align-target style="fill: #727272;"></md-icon>
+                <md-tooltip md-direction="bottom">Remove all checked</md-tooltip>
+            </md-button>
+
+            <div>
+                <md-checkbox aria-label="Check all tabs" md-indeterminate="isIndeterminate(tabs[key])" ng-checked="isChecked(tabs[key])" ng-click="toggleAll(tabs[key])" style="margin-left: 10px;margin-bottom: 0px;width: 24px;"></md-checkbox>
+                <md-tooltip md-direction="bottom">Check all</md-tooltip>
+            </div>
         </div>
     </md-toolbar>
 
@@ -69,7 +115,7 @@
 
                 <md-menu-content width="2">
                     <md-menu-item>
-                        <md-button ng-click="reloadTab(tab)" aria-label="Reload tab" ga-track-event="['open-tabs', 'reload']">
+                        <md-button ng-click="reloadTab(tab.id)" aria-label="Reload tab" ga-track-event="['open-tabs', 'reload']">
                             <md-icon md-svg-icon="reload"></md-icon> Reload
                         </md-button>
                     </md-menu-item>
@@ -79,12 +125,12 @@
                         </md-button>
                     </md-menu-item>
                     <md-menu-item ng-if="tab.pinned === false">
-                        <md-button ng-click="pinOrUnpinTab(tab, true)" aria-label="Pin tab" ga-track-event="['open-tabs', 'pin']">
+                        <md-button ng-click="pinOrUnpinTab(tab.id, true)" aria-label="Pin tab" ga-track-event="['open-tabs', 'pin']">
                             <md-icon md-svg-icon="pin"></md-icon> Pin
                         </md-button>
                     </md-menu-item>
                     <md-menu-item ng-if="tab.pinned === true">
-                        <md-button ng-click="pinOrUnpinTab(tab, false)" aria-label="Unpin tab" ga-track-event="['open-tabs', 'unpin']">
+                        <md-button ng-click="pinOrUnpinTab(tab.id, false)" aria-label="Unpin tab" ga-track-event="['open-tabs', 'unpin']">
                             <md-icon md-svg-icon="pin-off"></md-icon> Unpin
                         </md-button>
                     </md-menu-item>
@@ -106,6 +152,8 @@
                 <md-icon md-svg-icon="delete" md-menu-align-target></md-icon>
                 <md-tooltip md-direction="bottom">Remove</md-tooltip>
             </md-button>
+
+            <md-checkbox class="md-secondary" ng-true-value="'{{ tab.id }}'" ng-checked="tabs[key].selected.indexOf(tab.id) > -1" ng-click="toggle(tabs[key], tab.id)" aria-label="Check tab" style="margin-left: 8px;"></md-checkbox>
 
             <md-divider ng-if="$last === false"></md-divider>
 
