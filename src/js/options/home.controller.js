@@ -10,7 +10,7 @@ app.controller('HomeController', ['$scope', '$routeParams', '$location', '$mdDia
     // Checkboxes handling
 
     $scope.isIndeterminate = function (array) {
-        return (array.selected.length !== 0 && array.selected.length !== array.data.length);
+        return (array.selected.length > 0 && array.selected.length !== array.data.length);
     };
 
     $scope.isChecked = function (array) {
@@ -20,7 +20,9 @@ app.controller('HomeController', ['$scope', '$routeParams', '$location', '$mdDia
     $scope.toggleAll = function (array) {
         if (array.selected.length === array.data.length) {
             array.selected = [];
-        } else if (array.selected.length === 0 || array.selected.length > 0) {
+        } else {
+            array.selected = [];
+
             angular.forEach(array.data, function (tab) {
                 array.selected.push(tab.id);
             });
