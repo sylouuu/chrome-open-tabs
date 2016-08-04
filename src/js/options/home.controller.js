@@ -50,7 +50,7 @@ app.controller('HomeController', ['$scope', '$routeParams', '$location', '$mdDia
 
     $scope.reloadAllTabs = function (array) {
         angular.forEach(array.selected, function (id) {
-            $scope.reloadTab(id)
+            $scope.reloadTab(id);
         });
 
         array.selected = [];
@@ -158,7 +158,7 @@ app.controller('HomeController', ['$scope', '$routeParams', '$location', '$mdDia
             hideDelay: 0,
             position: 'top right',
             controller: 'ToastNewVersionController',
-            templateUrl: '../html/toast_new_version.min.html',
+            templateUrl: '../html/toast_new_version.html',
             locals: {
                 version: $routeParams.version
             }

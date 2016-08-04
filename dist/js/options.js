@@ -45,7 +45,7 @@ app.config(['$routeProvider', '$compileProvider', '$mdIconProvider', '$mdTheming
 
     var routes = {
         '/:event?/:version?': {
-            templateUrl: '/html/home.min.html',
+            templateUrl: '/html/home.html',
             controller: 'HomeController'
         }
     };
@@ -134,7 +134,7 @@ app.controller('HomeController', ['$scope', '$routeParams', '$location', '$mdDia
 
     $scope.reloadAllTabs = function (array) {
         angular.forEach(array.selected, function (id) {
-            $scope.reloadTab(id)
+            $scope.reloadTab(id);
         });
 
         array.selected = [];
@@ -242,7 +242,7 @@ app.controller('HomeController', ['$scope', '$routeParams', '$location', '$mdDia
             hideDelay: 0,
             position: 'top right',
             controller: 'ToastNewVersionController',
-            templateUrl: '../html/toast_new_version.min.html',
+            templateUrl: '../html/toast_new_version.html',
             locals: {
                 version: $routeParams.version
             }
@@ -306,7 +306,7 @@ app.controller('MainController', ['$scope', '$mdDialog', '$mdMedia', 'Analytics'
 
             for (var i = 0; i < tabs.length; i++) {
                 // Exclude options page
-                if (tabs[i].url !== chrome.extension.getURL('html/options.min.html')) {
+                if (tabs[i].url !== chrome.extension.getURL('html/options.html')) {
                     if (tabs[i].pinned === true) {
                         $scope.tabs.pinned.data.push(tabs[i]);
                     } else {
@@ -324,7 +324,7 @@ app.controller('MainController', ['$scope', '$mdDialog', '$mdMedia', 'Analytics'
     $scope.showSettings = function (evt) {
         $mdDialog.show({
             controller: 'SettingsModalController',
-            templateUrl: '../html/settings_modal.min.html',
+            templateUrl: '../html/settings_modal.html',
             targetEvent: evt,
             clickOutsideToClose: false,
             fullscreen: $mdMedia('xs'),

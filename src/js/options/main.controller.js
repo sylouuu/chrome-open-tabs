@@ -37,7 +37,7 @@ app.controller('MainController', ['$scope', '$mdDialog', '$mdMedia', 'Analytics'
 
             for (var i = 0; i < tabs.length; i++) {
                 // Exclude options page
-                if (tabs[i].url !== chrome.extension.getURL('html/options.min.html')) {
+                if (tabs[i].url !== chrome.extension.getURL('html/options.html')) {
                     if (tabs[i].pinned === true) {
                         $scope.tabs.pinned.data.push(tabs[i]);
                     } else {
@@ -55,7 +55,7 @@ app.controller('MainController', ['$scope', '$mdDialog', '$mdMedia', 'Analytics'
     $scope.showSettings = function (evt) {
         $mdDialog.show({
             controller: 'SettingsModalController',
-            templateUrl: '../html/settings_modal.min.html',
+            templateUrl: '../html/settings_modal.html',
             targetEvent: evt,
             clickOutsideToClose: false,
             fullscreen: $mdMedia('xs'),

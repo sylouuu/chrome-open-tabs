@@ -1,4 +1,4 @@
-var options_url = chrome.extension.getURL('html/options.min.html'), openOptionsPage, getOpenTabsCount, getStorage, updateBrowserActionBadge, handleBrowserActionBadgeEvents;
+var options_url = chrome.extension.getURL('html/options.html'), openOptionsPage, getOpenTabsCount, getStorage, updateBrowserActionBadge, handleBrowserActionBadgeEvents;
 
 // --------------------------------------------------------------------------------------------------------
 // Functions

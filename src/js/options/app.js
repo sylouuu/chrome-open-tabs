@@ -45,7 +45,7 @@ app.config(['$routeProvider', '$compileProvider', '$mdIconProvider', '$mdTheming
 
     var routes = {
         '/:event?/:version?': {
-            templateUrl: '/html/home.min.html',
+            templateUrl: '/html/home.html',
             controller: 'HomeController'
         }
     };

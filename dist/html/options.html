@@ -16,7 +16,7 @@
         <script src="https://ajax.googleapis.com/ajax/libs/angular_material/1.1.0-rc.5/angular-material.min.js"></script>
 
         <script src="../js/libs/angular-google-analytics.min.js"></script>
-        <script src="/js/options.min.js"></script>
+        <script src="/js/options.js"></script>
 
         <style>
             md-input-container > md-icon {
@@ -27,6 +27,20 @@
                 white-space: nowrap;
                 overflow: hidden;
                 text-overflow: ellipsis;
+            }
+
+            .my-icon-button {
+                padding: 7px !important;
+                min-width: 0;
+                min-height: 0;
+                line-height: normal;
+            }
+
+            .my-icon-button img {
+                width: 20px;
+                padding-top: 7px;
+                padding-left: 11px;
+                padding-right: 18px;
             }
         </style>
     </head>
@@ -77,6 +91,15 @@
                             <md-button href="https://www.paypal.me/svalienne/5" target="_blank" aria-label="Donate" ga-track-event="['resources', 'donate-click']">
                                 <md-icon md-svg-icon="credit-card"></md-icon>
                                 Donate
+                            </md-button>
+                        </md-menu-item>
+
+                        <md-menu-divider></md-menu-divider>
+
+                        <md-menu-item>
+                            <md-button class="my-icon-button" href="https://chrome.google.com/webstore/detail/tab-modifier/hcbgadmbdkiilgpifjgcakjehmafcjai" target="_blank" aria-label="Go to Tab Modifier" ga-track-event="['resources', 'tab-modifier-click']">
+                                <img src="/img/tab_modifier_32.png" alt="tab-modifier-icon"></img>
+                                Tab Modifier
                             </md-button>
                         </md-menu-item>
                     </md-menu-content>

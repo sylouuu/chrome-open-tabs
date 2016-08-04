@@ -1,7 +1,7 @@
 {
     "manifest_version": 2,
     "name": "Open Tabs",
-    "version": "0.2.1",
+    "version": "0.3.0",
     "description": "Show open tabs",
     "homepage_url": "https://github.com/sylouuu/chrome-open-tabs",
 
@@ -19,10 +19,10 @@
 
     "content_security_policy": "script-src 'self' https://ajax.googleapis.com https://www.google-analytics.com; object-src 'self'",
 
-    "options_page": "html/options.min.html",
+    "options_page": "html/options.html",
 
     "background": {
-        "scripts": ["js/background.min.js"],
+        "scripts": ["js/background.js"],
         "persistent": false
     },
 

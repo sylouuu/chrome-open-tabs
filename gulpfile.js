@@ -6,10 +6,7 @@
     var gulp       = require('gulp'),
         jshint     = require('gulp-jshint'),
         concat     = require('gulp-concat'),
-        rename     = require('gulp-rename'),
-        uglify     = require('gulp-uglify'),
-        jscs       = require('gulp-jscs'),
-        minifyHTML = require('gulp-minify-html');
+        jscs       = require('gulp-jscs');
 
     // Linter
     // ------------------------------------------------------------------------------------------------------
@@ -32,10 +29,6 @@
     gulp.task('build_background_script', function () {
         return gulp
             .src(['src/js/background.js'])
-            // .pipe(uglify())
-            .pipe(rename({
-                suffix: '.min'
-            }))
             .pipe(gulp.dest('dist/js'));
     });
 
@@ -48,20 +41,12 @@
         return gulp
             .src(['src/js/options/**/*.js'])
             .pipe(concat('options.js'))
-            // .pipe(uglify())
-            .pipe(rename({
-                suffix: '.min'
-            }))
             .pipe(gulp.dest('dist/js'));
     });
 
     gulp.task('build_options_html', function () {
         return gulp
             .src(['src/html/**/*.html'])
-            // .pipe(minifyHTML())
-            .pipe(rename({
-                suffix: '.min'
-            }))
             .pipe(gulp.dest('dist/html'));
     });
 
