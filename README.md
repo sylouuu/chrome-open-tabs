@@ -18,7 +18,7 @@ The open tabs are updated in real time.
 
 ## Why?
 
-I wanted to find an extension that shows opened tabs in an elegant ways but didn't find it. Hope you will like Open Tabs.
+I wanted to find an extension that shows opened tabs in an elegant way but didn't find it. Hope you will like Open Tabs.
 
 ## Installation
 
@@ -57,7 +57,7 @@ Clone the project and install dependencies with `npm install`.
 
 Type `gulp` to watch your changes inside `src/` folder or type `gulp build` after each change.
 
-### Load your local extension in Chrome
+### Load local extension in Chrome
 
 Go to `chrome://extensions/` and enable the "Developer mode".
 
