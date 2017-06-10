@@ -47,13 +47,13 @@ In case you want to contribute or just want to play with the code, follow the gu
 
 Download and install [NodeJS](http://nodejs.org/download/) to get [npm](https://www.npmjs.org/).
 
-Install `gulp` globally:
+Install `gulp` and `yarn` globally:
 
 ```bash
-sudo npm install -g gulp
+npm install -g gulp yarn
 ```
 
-Clone the project and install dependencies with `npm install`.
+Clone the project and install dependencies with `yarn`.
 
 Type `gulp` to watch your changes inside `src/` folder or type `gulp build` after each change.
 
