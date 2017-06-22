@@ -6,7 +6,9 @@ var options_url = chrome.extension.getURL('html/options.html'), openOptionsPage,
 openOptionsPage = function (hash) {
     chrome.tabs.query({ url: options_url }, function (tabs) {
         if (tabs.length > 0) {
-            chrome.tabs.update(tabs[0].id, { active: true, highlighted: true });
+            chrome.tabs.update(tabs[0].id, { active: true, highlighted: true }, function (current_tab) {
+                chrome.windows.update(current_tab.windowId, { focused: true });
+            });
         } else {
             chrome.tabs.create({ url: (hash !== undefined) ? options_url + '#' + hash : options_url });
         }
@@ -15,13 +17,13 @@ openOptionsPage = function (hash) {
 
 getOpenTabsCount = function (callback) {
     var count = 0;
-
+    
     chrome.tabs.query({ url: options_url }, function (tabs) {
         count -= tabs.length;
-
+        
         chrome.tabs.query({}, function (tabs) {
             count += tabs.length;
-
+            
             callback(count);
         });
     });
@@ -51,7 +53,7 @@ handleBrowserActionBadgeEvents = function () {
             return updateBrowserActionBadge(open_tabs);
         });
     };
-
+    
     getStorage(function (open_tabs) {
         if (open_tabs === undefined || open_tabs.settings.show_browser_action_count === true) {
             chrome.tabs.onCreated.addListener(tab_listener);
@@ -60,7 +62,7 @@ handleBrowserActionBadgeEvents = function () {
             chrome.tabs.onCreated.removeListener(tab_listener);
             chrome.tabs.onRemoved.removeListener(tab_listener);
         }
-
+        
         updateBrowserActionBadge(open_tabs);
     });
 };
@@ -84,7 +86,7 @@ chrome.runtime.onInstalled.addListener(function (details) {
                 if (open_tabs === undefined || open_tabs.settings === undefined) {
                     return;
                 }
-
+                
                 if (open_tabs.settings !== undefined && open_tabs.settings.enable_new_version_notification === true && details.previousVersion !== chrome.runtime.getManifest().version) {
                     openOptionsPage('update/' + chrome.runtime.getManifest().version);
                 }
